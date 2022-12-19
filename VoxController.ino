@@ -6,12 +6,12 @@ const int GreenLED = 9; // Green pin on RGB LED
 const int BlueLED = 10;// Blue pin on RGB LED
 const int ModeSwitch = 11; // Mode control switch
 const int TestPTT = 12; // PTT Test button
-
 // Setting initial variables
 int FirstBoot = 1;
-int ModeSwitchState = 1;
+int ModeSwitchState = 0;
 
-  // Set RGB_LED Controls
+// RGB_LED Control function, uses digital pin outputs rather than PWM (But would be easy to convert if someone wanted to use PWM instead for better colour control. Not really important.). 
+// RGB LED to be connected with serial resistor on each cathode. 
 void RGB_LED(int red, int green, int blue) {
   digitalWrite(RedLED,red);
   digitalWrite(GreenLED,green);
@@ -27,9 +27,10 @@ void setup() {
   pinMode(BlueLED, OUTPUT);
   pinMode(ModeSwitch, INPUT_PULLUP);
   pinMode(TestPTT, INPUT_PULLUP);
+  digitalWrite(PTTRelay,LOW); // Set initial PTTRelay state.
+  RGB_LED(0,0,0); // Set initial LED state.
+
 }
-
-
 
 void loop() {
   // Modes:
@@ -41,12 +42,12 @@ void loop() {
 
 // Check ModeSwitch Status - add debounce
 
-// Check PTT Status - debounce? Important? Probably not critical, but perhaps improves user experience.
+// Check PTT Status - debounce? Important? Probably not critical, but perhaps improves user experience/chattering of transmitter output - is there debounce on the FT847 already?
 
-// Set ModeSwitch State
 
 // Set RGB LED State
   if (FirstBoot == 1) {
+    int FirstBoot = 0;
   }
 
 
@@ -75,7 +76,7 @@ switch (ModeSwitchState) {
     delay(125);
     RGB_LED(0,0,0); // Off
     delay(500);
-    ModeSwitchState = 1;
+    int ModeSwitchState = 1;
     break;
   case 1:
     RGB_LED(0,0,1); //Set LED Blue
