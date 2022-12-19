@@ -5,6 +5,8 @@ int GreenLED = 9; // Green pin on RGB LED
 int BlueLED = 10;// Blue pin on RGB LED
 int ModeSwitch = 11; // Mode control switch
 int TestPTT = 12; // PTT Test button
+int FirstBoot = 1;
+int ModeSwitch = 0;
 
 void setup() {
 pinMode(AudioSense, INPUT);
@@ -14,8 +16,7 @@ pinMode(GreenLED, OUTPUT);
 pinMode(BlueLED, OUTPUT);
 pinMode(ModeSwitch, INPUT_PULLUP);
 pinMode(TestPTT, INPUT_PULLUP);
-FirstBoot = 1;
-ModeSwitch = 0;
+
 }
 
 
@@ -48,7 +49,16 @@ switch (ModeSwitch) {
     ModeSwitch = 1;
     break;
   case 1:
-
+    RGB_LED(0,1,0); //Set LED Green
+    if (digitalRead(TestPTT) == HIGH) { // Normal Operation in this mode - standby.
+      break;
+    }
+    elseif (digitalRead(TestPTT == LOW) { // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
+      digitalWrite(PTTRelay, HIGH);
+      digitalWrite(RGB_LED(1,0,0));
+      break;
+    }
+)
 
 }
  
