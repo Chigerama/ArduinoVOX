@@ -9,7 +9,14 @@ const int TestPTT = 12; // PTT Test button
 
 // Setting initial variables
 int FirstBoot = 1;
-int ModeSwitch = 0;
+int ModeSwitchState = 1;
+
+  // Set RGB_LED Controls
+void RGB_LED(int red, int green, int blue) {
+  digitalWrite(RedLED,red);
+  digitalWrite(GreenLED,green);
+  digitalWrite(BlueLED,blue);
+}
 
 void setup() {
   // Setting pin modes
@@ -32,9 +39,27 @@ void loop() {
   // 3) Activated. Red LED shown. PTT is active - either through vox activation or via Test PTT Button. 
   // Unsure if #3 is required, or if it can just be a momentary state, rather than an operating state.
 
-switch (ModeSwitch) {
+// Check ModeSwitch Status - add debounce
+
+// Check PTT Status - debounce? Important? Probably not critical, but perhaps improves user experience.
+
+// Set ModeSwitch State
+
+// Set RGB LED State
+  if (FirstBoot == 1) {
+  }
+
+
+if (digitalRead(ModeSwitch) == HIGH) {
+  
+}
+
+// Set TestPTT State
+
+
+switch (ModeSwitchState) {
   case 0: // Default startup state, rainbow led cycle, then move to state 1
-    RGB_LED(1, 0, 0); // Red
+    RGB_LED(0, 0, 0); // Red
     delay(125);
     RGB_LED(1, 0, 1); // Pink
     delay(125);
@@ -49,34 +74,34 @@ switch (ModeSwitch) {
     RGB_LED(1, 1, 1); // White
     delay(125);
     RGB_LED(0,0,0); // Off
-    delay(500)
-    int ModeSwitch = 1;
+    delay(500);
+    ModeSwitchState = 1;
     break;
   case 1:
     RGB_LED(0,0,1); //Set LED Blue
     if (digitalRead(TestPTT) == HIGH) { // Normal Operation in this mode - standby.
       break;
     }
-    elseif (digitalRead(TestPTT == LOW) { // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
+    else if (digitalRead(TestPTT == LOW)) { // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
       digitalWrite(PTTRelay, HIGH);
-      digitalWrite(RGB_LED(1,0,0));
-      delay(100)
-      break;
-    }
-  case 2:
-  digitalWrite(RGB_LED(0,1,0));
-  if (digitalRead(TestPTT) == HIGH) { // Normal Operation in this mode - standby.
-      break;
-    }
-    elseif (digitalRead(TestPTT == LOW) { // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
-      digitalWrite(PTTRelay, HIGH);
-      digitalWrite(RGB_LED(1,0,0));
+      RGB_LED(1,0,0);
       delay(100);
       break;
     }
-    elseif (digitalRead(AudioSense == High) {
+  case 2:
+  RGB_LED(0,1,0);
+  if (digitalRead(TestPTT) == HIGH) { // Normal Operation in this mode - standby.
+      break;
+    }
+    else if (digitalRead(TestPTT) == LOW) { // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
       digitalWrite(PTTRelay, HIGH);
-      digitalWrite(RGB_LED(1,0,0));
+      RGB_LED(1,0,0);
+      delay(100);
+      break;
+    }
+    else if (digitalRead(AudioSense) == HIGH) {
+      digitalWrite(PTTRelay, HIGH);
+      RGB_LED(1,0,0);
       delay(500);
       break;
     }
@@ -84,17 +109,5 @@ switch (ModeSwitch) {
       break;
     }
   } 
-if (digitalRead(ModeSwitch) == high) {
-  
+  delay(100);
 }
-}
- 
-delay(100)
-}
-
-void RGB_LED(int red, int green, int blue) {
-  digitalWrite(RedLED,red);
-  digitalWrite(GreenLED,green);
-  digitalWrite(BlueLED,blue);
-}
-
