@@ -1,5 +1,5 @@
 // #include <DebounceInput.h> // No point reinventing the wheel. Source: https://github.com/PaulMurrayCbr/DebounceInput
-
+// First Alpha?
 // Setting pin numbers
 const int AudioSense = 2; // Audio Sensor on pin 2
 const int PTTRelay = 4; // PTT Relay Output on pin 4
@@ -98,6 +98,7 @@ else if (CurrentMode == 1) {
     if (ModeSwitchState == LOW) {
       CurrentMode = 2;
       RGB_LED(0,0,0);
+      delay(250);
       return;
       }
     else if (TestPTTState == LOW) { // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
@@ -106,29 +107,41 @@ else if (CurrentMode == 1) {
       delay(250);
     }
     else if (AudioSenseState == LOW) { // This is used to test audio vox levels while in standby mode.
-      RGB_LED(1,1,0);
+      RGB_LED(1,0,1);
     }
     else if (TestPTTState == HIGH) { // Normal Operation in this mode - standby.
           digitalWrite(PTTRelay, LOW);
       RGB_LED(0,0,1); // Set LED Blue
     }
   }
-else if (CurrentMode == 2) {
-    RGB_LED(0,1,0);
-      if (TestPTTState == LOW) { // Normal Operation in this mode - standby.
-      digitalWrite(PTTRelay, LOW);
-    }
-    else if (TestPTTState == LOW) { // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
-      digitalWrite(PTTRelay, HIGH);
-      RGB_LED(1,0,0);
-      delay(100);
-    }
+  else if (CurrentMode == 2) {
+    if (ModeSwitchState == LOW) {
+      CurrentMode = 1;
+      RGB_LED(0,0,0);
+      delay(250);
+      return;
+      }
     else if (AudioSenseState == LOW) {
       digitalWrite(PTTRelay, HIGH);
       RGB_LED(1,0,0);
       delay(750);
+      return;
     }
-    else {      
+    else if (TestPTTState == LOW) { // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
+      digitalWrite(PTTRelay, HIGH);
+      RGB_LED(1,0,0);
+      delay(250);
+      return;
+    }
+    else if (TestPTTState == HIGH) { // Normal Operation in this mode.
+      digitalWrite(PTTRelay, LOW);
+      RGB_LED(0,1,0); // Set LED Green
+      return;
+    }
+   else if (AudioSenseState == HIGH) {
+    digitalWrite(PTTRelay, LOW);
+    return;
     }
   }
-  }
+}
+  
