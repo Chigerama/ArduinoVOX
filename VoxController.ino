@@ -1,5 +1,15 @@
 // #include <DebounceInput.h> // No point reinventing the wheel. Source: https://github.com/PaulMurrayCbr/DebounceInput
-// First Alpha?
+// First Alpha? 
+//
+// To Do list:
+//  Need to debounce Mode button, PTT Test Button. Shouldn't need to worry about AudioSense input.
+//  May need a reset timer on the AudioSense, similar to debounce, but to delay the closure of the PTT without delaying sensing of audio input.
+//  Test alpha version on real hardware - PTT and Vox on standby, PTT and Vox on Active mode.
+//  Test PTT functionality with FT-847
+//  Test VOX functionality with FT-847
+//  Check with RF transmission - any need to consider opto-isolated inputs?
+//  Check delays/actual functionality is fit for purpose. Need any tweaks?
+
 // Setting pin numbers
 const int AudioSense = 2; // Audio Sensor on pin 2
 const int PTTRelay = 4; // PTT Relay Output on pin 4
