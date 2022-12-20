@@ -1,3 +1,5 @@
+#include <DebounceInput.h> // No point reinventing the wheel. Source: https://github.com/PaulMurrayCbr/DebounceInput
+
 // Setting pin numbers
 const int AudioSense = 2; // Audio Sensor on pin 2
 const int PTTRelay = 4; // PTT Relay Output on pin 4
@@ -6,6 +8,7 @@ const int GreenLED = 9; // Green pin on RGB LED
 const int BlueLED = 10;// Blue pin on RGB LED
 const int ModeSwitch = 11; // Mode control switch
 const int TestPTT = 12; // PTT Test button
+
 // Setting initial variables
 int FirstBoot = 1;
 int ModeSwitchState = 0;
@@ -40,22 +43,22 @@ void loop() {
   // 3) Activated. Red LED shown. PTT is active - either through vox activation or via Test PTT Button. 
   // Unsure if #3 is required, or if it can just be a momentary state, rather than an operating state.
 
-// Check ModeSwitch Status - add debounce
+// Check ModeSwitch Status
 
-// Check PTT Status - debounce? Important? Probably not critical, but perhaps improves user experience/chattering of transmitter output - is there debounce on the FT847 already?
-
-
-// Set RGB LED State
-  if (FirstBoot == 1) {
-    int FirstBoot = 0;
-  }
+// Check PTT Status
 
 
+// Set RGB LED State -- Depricated. Any need for this if using void setup?
+//  if (FirstBoot == 1) {
+//    int FirstBoot = 0;
+//  }
+
+// Set ModeSwitchState if button is pressed.
 if (digitalRead(ModeSwitch) == HIGH) {
   
 }
 
-// Set TestPTT State
+// Set TestPTT State if button is pressed.
 
 
 switch (ModeSwitchState) {
@@ -76,6 +79,7 @@ switch (ModeSwitchState) {
     delay(125);
     RGB_LED(0,0,0); // Off
     delay(500);
+    int FirstBoot = 0;
     int ModeSwitchState = 1;
     break;
   case 1:
