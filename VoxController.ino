@@ -1,4 +1,4 @@
-#include <DebounceInput.h> // No point reinventing the wheel. Source: https://github.com/PaulMurrayCbr/DebounceInput
+// #include <DebounceInput.h> // No point reinventing the wheel. Source: https://github.com/PaulMurrayCbr/DebounceInput
 
 // Setting pin numbers
 const int AudioSense = 2; // Audio Sensor on pin 2
@@ -23,7 +23,7 @@ void RGB_LED(int red, int green, int blue) {
 
 void setup() {
   // Setting pin modes
-  pinMode(AudioSense, INPUT);
+  pinMode(AudioSense, INPUT_PULLUP);
   pinMode(PTTRelay, OUTPUT);
   pinMode(RedLED, OUTPUT);
   pinMode(GreenLED, OUTPUT);
@@ -31,8 +31,8 @@ void setup() {
   pinMode(ModeSwitch, INPUT_PULLUP);
   pinMode(TestPTT, INPUT_PULLUP);
   digitalWrite(PTTRelay,LOW); // Set initial PTTRelay state.
-  RGB_LED(0,0,0); // Set initial LED state.
-
+  RGB_LED(1,1,1); // Set initial LED state.
+  delay(2000);
 }
 
 void loop() {
@@ -54,15 +54,26 @@ void loop() {
 //  }
 
 // Set ModeSwitchState if button is pressed.
-if (digitalRead(ModeSwitch) == HIGH) {
-  
-}
+// if (digitalRead(ModeSwitch) == HIGH) {
+//   break;
+// }
 
 // Set TestPTT State if button is pressed.
+int TestPTTState = LOW;
+int ModeSwitchState = LOW;
+int AudioSenseState = LOW;
 
+// Read Switch States
+// modetest:
+TestPTTState = digitalRead(TestPTT);
+ModeSwitchState = digitalRead(ModeSwitch);
+AudioSenseState = digitalRead(AudioSense);
+// if (TestPTTState == LOW) { RGB_LED(1,0,0);}
+// if (ModeSwitchState == LOW) { RGB_LED(0,1,0);}
+// if (AudioSenseState == LOW) { RGB_LED(0,0,1);}
+// goto modetest;
 
-switch (ModeSwitchState) {
-  case 0: // Default startup state, rainbow led cycle, then move to state 1
+if (FirstBoot == 1) {  // Default startup state, rainbow led cycle, then move to state 1
     RGB_LED(0, 0, 0); // Red
     delay(125);
     RGB_LED(1, 0, 1); // Pink
@@ -79,40 +90,41 @@ switch (ModeSwitchState) {
     delay(125);
     RGB_LED(0,0,0); // Off
     delay(500);
-    int FirstBoot = 0;
-    int ModeSwitchState = 1;
-    break;
-  case 1:
-    RGB_LED(0,0,1); //Set LED Blue
-    if (digitalRead(TestPTT) == HIGH) { // Normal Operation in this mode - standby.
-      break;
+    FirstBoot = 0;
+    ModeSwitchState = 1;
+}
+else if (ModeSwitchState == 1) {
+    if (ModeSwitchState == LOW) {
+      ModeSwitchState = 2;
+   }
+    else if (TestPTTState == HIGH) { // Normal Operation in this mode - standby.
+          digitalWrite(PTTRelay, LOW);
+      RGB_LED(0,0,1); // Set LED Blue
     }
-    else if (digitalRead(TestPTT == LOW)) { // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
+    else if (TestPTTState == LOW) { // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
       digitalWrite(PTTRelay, HIGH);
       RGB_LED(1,0,0);
       delay(100);
-      break;
     }
-  case 2:
-  RGB_LED(0,1,0);
-  if (digitalRead(TestPTT) == HIGH) { // Normal Operation in this mode - standby.
-      break;
+else if (ModeSwitchState == 2) {
+    RGB_LED(0,1,0);
+      if (TestPTTState == LOW) { // Normal Operation in this mode - standby.
+      digitalWrite(PTTRelay, LOW);
     }
-    else if (digitalRead(TestPTT) == LOW) { // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
+    else if (TestPTTState == LOW) { // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
       digitalWrite(PTTRelay, HIGH);
       RGB_LED(1,0,0);
       delay(100);
-      break;
     }
-    else if (digitalRead(AudioSense) == HIGH) {
+    else if (digitalRead(AudioSense) == LOW) {
       digitalWrite(PTTRelay, HIGH);
       RGB_LED(1,0,0);
       delay(500);
-      break;
     }
     else {      
-      break;
     }
   } 
+else {}
   delay(100);
+}
 }
