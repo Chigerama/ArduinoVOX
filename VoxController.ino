@@ -120,8 +120,7 @@ else if (CurrentMode == 1) { // Standby mode - only TestPTT activates output
     }
     else if (AudioSenseState == LOW) { // This is used to test audio vox levels while in standby mode.
       RGB_LED(1,0,1);
-      digitalWrite(PTTRelay, HIGH);
-      AudioSenseTime = (millis()+2000);
+      AudioSenseTime = (millis()+500);
       return;
     }
     else if (AudioSenseState == HIGH) {
@@ -152,31 +151,37 @@ else if (CurrentMode == 1) { // Standby mode - only TestPTT activates output
       delay(250);
       return;
       }
-    else if (AudioSenseState == LOW) {
-      digitalWrite(PTTRelay, HIGH);
-      RGB_LED(1,0,0);
-      AudioSenseTime = millis();
-      return;
-    }
     else if (TestPTTState == LOW) { // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
-      digitalWrite(PTTRelay, HIGH);
       RGB_LED(1,0,0);
+      digitalWrite(PTTRelay, HIGH);
       delay(250);
       return;
     }
-    else if (TestPTTState == HIGH) { // Normal Operation in this mode.
-      digitalWrite(PTTRelay, LOW);
-      RGB_LED(0,1,0); // Set LED Green
+    else if (AudioSenseState == LOW) { // This is used to test audio vox levels while in standby mode.
+      RGB_LED(1,0,0);
+      digitalWrite(PTTRelay, HIGH);
+      AudioSenseTime = (millis()+2000);
       return;
     }
     else if (AudioSenseState == HIGH) {
-    if ((AudioSenseTime + 2000) < millis()) {
-      digitalWrite(PTTRelay, LOW);
+      if (AudioSenseTime < millis()) {
+        digitalWrite(PTTRelay, LOW);
+        RGB_LED(0,1,0);
+        return;
+      }
+      else {
+        return;
+      }
+    }
+    else if (TestPTTState == HIGH) { // Normal Operation in this mode - standby.
+    if (AudioSenseTime < millis()) {
+          digitalWrite(PTTRelay, LOW);
+      RGB_LED(0,1,0); // Set LED Blue
       return;
+      }
     }
     else {
       return;
     }
-  }
- }
- }
+  } 
+}
