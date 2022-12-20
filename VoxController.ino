@@ -23,6 +23,7 @@ const int TestPTT = 12; // PTT Test button
 int FirstBoot = 1;
 int ModeSwitchState = 0;
 int CurrentMode = 0;
+unsigned long AudioSenseTime = 0;
 
 // RGB_LED Control function, uses digital pin outputs rather than PWM (But would be easy to convert if someone wanted to use PWM instead for better colour control. Not really important.). 
 // RGB LED to be connected with serial resistor on each cathode. 
@@ -104,7 +105,7 @@ if (FirstBoot == 1) {  // Default startup state, rainbow led cycle, then move to
     FirstBoot = 0;
     CurrentMode = 1;
 }
-else if (CurrentMode == 1) {
+else if (CurrentMode == 1) { // Standby mode - only TestPTT activates output
     if (ModeSwitchState == LOW) {
       CurrentMode = 2;
       RGB_LED(0,0,0);
@@ -112,18 +113,38 @@ else if (CurrentMode == 1) {
       return;
       }
     else if (TestPTTState == LOW) { // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
-      digitalWrite(PTTRelay, HIGH);
       RGB_LED(1,0,0);
+      digitalWrite(PTTRelay, HIGH);
       delay(250);
+      return;
     }
     else if (AudioSenseState == LOW) { // This is used to test audio vox levels while in standby mode.
       RGB_LED(1,0,1);
+      digitalWrite(PTTRelay, HIGH);
+      AudioSenseTime = (millis()+2000);
+      return;
+    }
+    else if (AudioSenseState == HIGH) {
+      if (AudioSenseTime < millis()) {
+        digitalWrite(PTTRelay, LOW);
+        RGB_LED(0,0,1);
+        return;
+      }
+      else {
+        return;
+      }
     }
     else if (TestPTTState == HIGH) { // Normal Operation in this mode - standby.
+    if (AudioSenseTime < millis()) {
           digitalWrite(PTTRelay, LOW);
       RGB_LED(0,0,1); // Set LED Blue
+      return;
+      }
     }
-  }
+    else {
+      return;
+    }
+}
   else if (CurrentMode == 2) {
     if (ModeSwitchState == LOW) {
       CurrentMode = 1;
@@ -134,7 +155,7 @@ else if (CurrentMode == 1) {
     else if (AudioSenseState == LOW) {
       digitalWrite(PTTRelay, HIGH);
       RGB_LED(1,0,0);
-      delay(750);
+      AudioSenseTime = millis();
       return;
     }
     else if (TestPTTState == LOW) { // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
@@ -148,10 +169,14 @@ else if (CurrentMode == 1) {
       RGB_LED(0,1,0); // Set LED Green
       return;
     }
-   else if (AudioSenseState == HIGH) {
-    digitalWrite(PTTRelay, LOW);
-    return;
+    else if (AudioSenseState == HIGH) {
+    if ((AudioSenseTime + 2000) < millis()) {
+      digitalWrite(PTTRelay, LOW);
+      return;
+    }
+    else {
+      return;
     }
   }
-}
-  
+ }
+ }
