@@ -12,6 +12,7 @@ const int TestPTT = 12; // PTT Test button
 // Setting initial variables
 int FirstBoot = 1;
 int ModeSwitchState = 0;
+int CurrentMode = 0;
 
 // RGB_LED Control function, uses digital pin outputs rather than PWM (But would be easy to convert if someone wanted to use PWM instead for better colour control. Not really important.). 
 // RGB LED to be connected with serial resistor on each cathode. 
@@ -59,9 +60,9 @@ void loop() {
 // }
 
 // Set TestPTT State if button is pressed.
-int TestPTTState = LOW;
-int ModeSwitchState = LOW;
-int AudioSenseState = LOW;
+int TestPTTState = HIGH;
+int ModeSwitchState = HIGH;
+int AudioSenseState = HIGH;
 
 // Read Switch States
 // modetest:
@@ -91,22 +92,28 @@ if (FirstBoot == 1) {  // Default startup state, rainbow led cycle, then move to
     RGB_LED(0,0,0); // Off
     delay(500);
     FirstBoot = 0;
-    ModeSwitchState = 1;
+    CurrentMode = 1;
 }
-else if (ModeSwitchState == 1) {
+else if (CurrentMode == 1) {
     if (ModeSwitchState == LOW) {
-      ModeSwitchState = 2;
-   }
+      CurrentMode = 2;
+      RGB_LED(0,0,0);
+      return;
+      }
+    else if (TestPTTState == LOW) { // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
+      digitalWrite(PTTRelay, HIGH);
+      RGB_LED(1,0,0);
+      delay(250);
+    }
+    else if (AudioSenseState == LOW) { // This is used to test audio vox levels while in standby mode.
+      RGB_LED(1,1,0);
+    }
     else if (TestPTTState == HIGH) { // Normal Operation in this mode - standby.
           digitalWrite(PTTRelay, LOW);
       RGB_LED(0,0,1); // Set LED Blue
     }
-    else if (TestPTTState == LOW) { // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
-      digitalWrite(PTTRelay, HIGH);
-      RGB_LED(1,0,0);
-      delay(100);
-    }
-else if (ModeSwitchState == 2) {
+  }
+else if (CurrentMode == 2) {
     RGB_LED(0,1,0);
       if (TestPTTState == LOW) { // Normal Operation in this mode - standby.
       digitalWrite(PTTRelay, LOW);
@@ -116,15 +123,12 @@ else if (ModeSwitchState == 2) {
       RGB_LED(1,0,0);
       delay(100);
     }
-    else if (digitalRead(AudioSense) == LOW) {
+    else if (AudioSenseState == LOW) {
       digitalWrite(PTTRelay, HIGH);
       RGB_LED(1,0,0);
-      delay(500);
+      delay(750);
     }
     else {      
     }
-  } 
-else {}
-  delay(100);
-}
-}
+  }
+  }
