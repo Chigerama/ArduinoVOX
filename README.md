@@ -9,6 +9,8 @@ Also thanks go to [Core Electronics](https://core-electronics.com.au) for supply
 
 A full description of the build shall be available online [here](http://mywebsite.here.maybe?)
 
+A simulation of this project is [available here](https://wokwi.com/projects/351784284891120213) - it uses the "HIGH = Active" version of the sketch.
+
 ## The full parts list is as below (Part numbers from Core Electronics):
 * CE05261 (x4) - General Purpose Diode 1N4007 --- In case i decide to use the diodes to drop the voltage input going into the DC barrel connector of the Arduino.
 * PRT-14492 (x1) - Resistor 1K Ohm 1/4 Watt PTH - 20 pack (Thick Leads) --- LED Current limiting resistors
