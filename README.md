@@ -2,8 +2,7 @@
 
 ## Second Alpha.
 
-Zero warranty provided. The software below is free and unencumbered software released into the public domain.
-Unlicense: https://unlicense.org/
+Zero warranty provided.
 
 Credit to https://wokwi.com for use of their Arduino simulator, while waiting for the real hardware to get shipped to me.
 Also thanks go to https://core-electronics.com.au for supply of the actual hardware, and quick shipping right before Christmas!
@@ -24,7 +23,7 @@ A full description of the build shall be available online here: http://mywebsite
 * CE08794 (x1) - Male DC Barrel Jack Adapter (2.1mm) --- To feed the 13.8v from the radio power supply into the DC Barrel jack power switch above.
 * Also required: Two momentary button switches, enclosure.
 
-##To Do list:
+## To Do list:
 * Need to debounce Mode button, PTT Test Button. Shouldn't need to worry about AudioSense input.
 * ~~Test alpha version on real hardware - PTT and Vox on standby, PTT and Vox on Active mode.~~
 * Test PTT functionality with FT-847
@@ -34,7 +33,7 @@ A full description of the build shall be available online here: http://mywebsite
 * Set final Vox Sensitivty once in enclosure.
 
 
-##License:
+## License:
 This is free and unencumbered software released into the public domain.
 
 Anyone is free to copy, modify, publish, use, compile, sell, or
