@@ -1,18 +1,12 @@
 // #include <DebounceInput.h> // No point reinventing the wheel. Source: https://github.com/PaulMurrayCbr/DebounceInput
 // Second Alpha.
 //
-// Zero warranty provided. The software below is free and unencumbered software released into the public domain.
-// Unlicense: https://unlicense.org/
+// THIS SKETCH USES LOW = ACTIVE RELAYS. SEE ALTERNATIVE SKETCH THAT USES
+// HIGH = ACTIVE RELAYS HERE: https://github.com/Chigerama/ArduinoVOX/
 //
-// A full description of the build shall be available online here: http://mywebsite.here.maybe?
-
-// To Do list:
-//  Need to debounce Mode button, PTT Test Button. Shouldn't need to worry about AudioSense input.
-//  Test alpha version on real hardware - PTT and Vox on standby, PTT and Vox on Active mode.
-//  Test PTT functionality with FT-847
-//  Test VOX functionality with FT-847
-//  Check with RF transmission - any need to consider opto-isolated inputs?
-//  Check delays/actual functionality is fit for purpose. Need any tweaks?
+// Zero warranty provided. 
+//
+//
 
 // Setting pin numbers
 const int AudioSense = 2;   // Audio Sensor on pin 2
