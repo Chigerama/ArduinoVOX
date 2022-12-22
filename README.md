@@ -24,13 +24,13 @@ A simulation of this project is [available here](https://wokwi.com/projects/3517
 * Also required: Two momentary button switches, enclosure.
 
 ## To Do list:
-* Need to debounce Mode button, PTT Test Button. Shouldn't need to worry about AudioSense input.
-* ~~Test alpha version on real hardware - PTT and Vox on standby, PTT and Vox on Active mode.~~
-* Test PTT functionality with FT-847
-* Test VOX functionality with FT-847
-* Check with RF transmission - any need to consider opto-isolated inputs?
-* Check delays/actual functionality is fit for purpose. Need any tweaks?
-* Set final Vox Sensitivty once in enclosure.
+- [] Need to debounce Mode button, PTT Test Button. Shouldn't need to worry about AudioSense input.
+- [x] Test alpha version on real hardware - PTT and Vox on standby, PTT and Vox on Active mode.
+- [] Test PTT functionality with FT-847
+- [] Test VOX functionality with FT-847
+- [] Check with RF transmission - any need to consider opto-isolated inputs?
+- [] Check delays/actual functionality is fit for purpose. Need any tweaks?
+- [] Set final Vox Sensitivty once in enclosure.
 
 
 ## License:
