@@ -7,8 +7,6 @@ Zero warranty provided.
 Credit to [Wowki](https://wokwi.com) for use of their Arduino simulator, while waiting for the real hardware to get shipped to me.
 Also thanks go to [Core Electronics](https://core-electronics.com.au) for supply of the actual hardware, and quick shipping right before Christmas!
 
-A full description of the build shall be available online [here](http://mywebsite.here.maybe?)
-
 A simulation of this project is [available here](https://wokwi.com/projects/351784284891120213) - it uses the "HIGH = Active" version of the sketch.
 
 ## The full parts list is as below (Part numbers from Core Electronics):
