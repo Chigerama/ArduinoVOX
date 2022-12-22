@@ -4,10 +4,10 @@
 
 Zero warranty provided.
 
-Credit to https://wokwi.com for use of their Arduino simulator, while waiting for the real hardware to get shipped to me.
-Also thanks go to https://core-electronics.com.au for supply of the actual hardware, and quick shipping right before Christmas!
+Credit to [Wowki](https://wokwi.com) for use of their Arduino simulator, while waiting for the real hardware to get shipped to me.
+Also thanks go to [Core Electronics](https://core-electronics.com.au) for supply of the actual hardware, and quick shipping right before Christmas!
 
-A full description of the build shall be available online here: http://mywebsite.here.maybe?
+A full description of the build shall be available online [here](http://mywebsite.here.maybe?)
 
 ## The full parts list is as below (Part numbers from Core Electronics):
 * CE05261 (x4) - General Purpose Diode 1N4007 --- In case i decide to use the diodes to drop the voltage input going into the DC barrel connector of the Arduino.
