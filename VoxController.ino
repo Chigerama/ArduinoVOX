@@ -25,9 +25,13 @@ const int TestPTT = 12;     // PTT Test button
 
 // Setting initial variables
 int FirstBoot = 1;                 // Just to add some flavour to first boot. Absolutely not needed. Set to 0 to bypass.
-int ModeSwitchState = 0;           // Stores the current state of the mode switch - used for switching modes.
+int ModeSwitchState = HIGH;           // Stores the current state of the mode switch - used for switching modes.
 int CurrentMode = 0;               // Used to store current operating mode - Standby/Active.
 unsigned long AudioSenseTime = 0;  // This value is used to store the time at which the vox was last triggered.
+int TestPTTState = HIGH;  // Set TestPTT State if button is pressed.
+// int ModeSwitchState = HIGH;
+int AudioSenseState = LOW;
+
 
 // RGB_LED Control function, uses digital pin outputs rather than PWM (But would be easy to convert if someone wanted to use PWM instead for better colour control. Not really important.).
 // RGB LED to be connected with serial resistor on each cathode.
@@ -46,7 +50,7 @@ void setup() {
   pinMode(BlueLED, OUTPUT);
   pinMode(ModeSwitch, INPUT_PULLUP);
   pinMode(TestPTT, INPUT_PULLUP);
-  digitalWrite(PTTRelay, LOW);  // Set initial PTTRelay state.
+  digitalWrite(PTTRelay, HIGH);  // Set initial PTTRelay state.
   RGB_LED(1, 1, 1);             // Set initial LED state.
   delay(2000);
 }
@@ -59,10 +63,6 @@ void loop() {
   // 3) Activated. Red LED shown. PTT is active - either through vox activation or via Test PTT Button.
   // Unsure if #3 is required, or if it can just be a momentary state, rather than an operating state.
 
-  int TestPTTState = HIGH;  // Set TestPTT State if button is pressed.
-  int ModeSwitchState = HIGH;
-  int AudioSenseState = HIGH;
-
   // Read Switch States -- uncomment the lines below to create a loop for testing buttons.
   // modetest:
   TestPTTState = digitalRead(TestPTT);
@@ -72,6 +72,7 @@ void loop() {
   // if (ModeSwitchState == LOW) { RGB_LED(0,1,0);}
   // if (AudioSenseState == LOW) { RGB_LED(0,0,1);}
   // goto modetest;
+  delay(2);  // This seems to be critical to allowing the relay to de-latch... Any lower and it won't work. Higher and usability suffers.
 
   if (FirstBoot == 1) {  // Default startup state, rainbow led cycle, then move to state 1
     RGB_LED(0, 0, 0);  // Red
@@ -106,7 +107,7 @@ void loop() {
       return;
     } else if (TestPTTState == LOW) {  // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
       RGB_LED(1, 0, 0);
-      digitalWrite(PTTRelay, HIGH);
+      digitalWrite(PTTRelay, LOW);
       delay(250);
       return;
     } else if (AudioSenseState == LOW) {  // This is used to test audio vox levels while in standby mode.
@@ -115,7 +116,7 @@ void loop() {
       return;
     } else if (AudioSenseState == HIGH) {
       if (AudioSenseTime < millis()) {
-        digitalWrite(PTTRelay, LOW);
+        digitalWrite(PTTRelay, HIGH);
         RGB_LED(0, 0, 1);
         return;
       } else {
@@ -123,14 +124,14 @@ void loop() {
       }
     } else if (TestPTTState == HIGH) {  // Normal Operation in this mode - standby.
       if (AudioSenseTime < millis()) {
-        digitalWrite(PTTRelay, LOW);
+        digitalWrite(PTTRelay, HIGH);
         RGB_LED(0, 0, 1);  // Set LED Blue
         return;
       }
     } else {
       return;
     }
-  } else if (CurrentMode == 2) {
+  } else if (CurrentMode == 2) {  // Standby mode - only TestPTT activates output
     if (ModeSwitchState == LOW) {
       CurrentMode = 1;
       RGB_LED(0, 0, 0);
@@ -138,17 +139,17 @@ void loop() {
       return;
     } else if (TestPTTState == LOW) {  // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
       RGB_LED(1, 0, 0);
-      digitalWrite(PTTRelay, HIGH);
+      digitalWrite(PTTRelay, LOW);
       delay(250);
       return;
     } else if (AudioSenseState == LOW) {  // This is used to test audio vox levels while in standby mode.
       RGB_LED(1, 0, 0);
-      digitalWrite(PTTRelay, HIGH);
+      digitalWrite(PTTRelay, LOW);
       AudioSenseTime = (millis() + 2000);
       return;
     } else if (AudioSenseState == HIGH) {
       if (AudioSenseTime < millis()) {
-        digitalWrite(PTTRelay, LOW);
+        digitalWrite(PTTRelay, HIGH);
         RGB_LED(0, 1, 0);
         return;
       } else {
@@ -156,7 +157,7 @@ void loop() {
       }
     } else if (TestPTTState == HIGH) {  // Normal Operation in this mode - standby.
       if (AudioSenseTime < millis()) {
-        digitalWrite(PTTRelay, LOW);
+        digitalWrite(PTTRelay, HIGH);
         RGB_LED(0, 1, 0);  // Set LED Blue
         return;
       }
