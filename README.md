@@ -1,6 +1,6 @@
 # ArduinoVOX Created 19/12/2022 by Chigerama.
 
-## Second Alpha.
+## First Beta. 25/12/22.
 
 Zero warranty provided.
 
