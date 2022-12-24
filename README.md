@@ -26,11 +26,17 @@ A simulation of this project is [available here](https://wokwi.com/projects/3517
 ## To Do list:
 - [ ] Need to debounce Mode button, PTT Test Button. Shouldn't need to worry about AudioSense input.
 - [x] Test alpha version on real hardware - PTT and Vox on standby, PTT and Vox on Active mode.
-- [ ] Test PTT functionality with FT-847
-- [ ] Test VOX functionality with FT-847
-- [ ] Check with RF transmission - any need to consider opto-isolated inputs?
-- [ ] Check delays/actual functionality is fit for purpose. Need any tweaks?
-- [ ] Set final Vox Sensitivty once in enclosure.
+* Good!
+- [x] Test PTT functionality with FT-847
+* Good!
+- [x] Test VOX functionality with FT-847
+* Good!
+- [x] Check with RF transmission - any need to consider opto-isolated inputs?
+* Initial testing seems okay. Boxed in plastic enclosure, sitting on top of FT-847. 
+- [x] Check delays/actual functionality is fit for purpose. Need any tweaks?
+* So far so good. Final tests to be conducted in the coming days. (Xmas 2022)
+- [x] Set final Vox Sensitivty once in enclosure.
+* Seems okay so far, may need tweaks in the coming days.
 
 
 ## License:
