@@ -1,13 +1,9 @@
 // #include <DebounceInput.h> // No point reinventing the wheel. Source: https://github.com/PaulMurrayCbr/DebounceInput
-// Second Alpha.
+// First Beta.
 //
-// THIS SKETCH USES LOW = ACTIVE RELAYS. SEE ALTERNATIVE SKETCH THAT USES
-// HIGH = ACTIVE RELAYS HERE: https://github.com/Chigerama/ArduinoVOX/
+// Zero warranty provided. The software below is free and unencumbered software released into the public domain.
+// Unlicense: https://unlicense.org/
 //
-// Zero warranty provided. 
-//
-//
-
 // Setting pin numbers
 const int AudioSense = 2;   // Audio Sensor on pin 2
 const int PTTRelay = 4;     // PTT Relay Output on pin 4
@@ -46,7 +42,7 @@ void setup() {
   pinMode(TestPTT, INPUT_PULLUP);
   digitalWrite(PTTRelay, HIGH);  // Set initial PTTRelay state.
   RGB_LED(1, 1, 1);             // Set initial LED state.
-  delay(2000);
+  delay(1000);
 }
 
 void loop() {
@@ -69,21 +65,19 @@ void loop() {
   delay(2);  // This seems to be critical to allowing the relay to de-latch... Any lower and it won't work. Higher and usability suffers.
 
   if (FirstBoot == 1) {  // Default startup state, rainbow led cycle, then move to state 1
-    RGB_LED(0, 0, 0);  // Red
-    delay(125);
-    RGB_LED(1, 0, 1);  // Pink
-    delay(125);
-    RGB_LED(1, 1, 0);  // Yellow
-    delay(125);
-    RGB_LED(0, 1, 0);  // Green
-    delay(125);
-    RGB_LED(0, 1, 1);  // Teal
-    delay(125);
-    RGB_LED(0, 0, 1);  // Blue
-    delay(125);
-    RGB_LED(1, 1, 1);  // White
-    delay(125);
-    RGB_LED(0, 0, 0);  // Off
+    RGB_LED(0, 1, 1);  // Red
+    delay(250);
+    RGB_LED(0, 1, 0);  // Pink
+    delay(250);
+    RGB_LED(0, 0, 1);  // Yellow
+    delay(250);
+    RGB_LED(1, 0, 1);  // Green
+    delay(250);
+    RGB_LED(1, 0, 0);  // Teal
+    delay(250);
+    RGB_LED(1, 1, 0);  // Blue
+    delay(250);
+    RGB_LED(0, 0, 0);  // White
     delay(500);
     FirstBoot = 0;
     CurrentMode = 1;
@@ -96,22 +90,22 @@ void loop() {
   else if (CurrentMode == 1) {  // Standby mode - only TestPTT activates output
     if (ModeSwitchState == LOW) {
       CurrentMode = 2;
-      RGB_LED(0, 0, 0);
+      RGB_LED(1, 1, 0);
       delay(250);
       return;
     } else if (TestPTTState == LOW) {  // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
-      RGB_LED(1, 0, 0);
+      RGB_LED(0, 1, 1);
       digitalWrite(PTTRelay, LOW);
       delay(250);
       return;
-    } else if (AudioSenseState == LOW) {  // This is used to test audio vox levels while in standby mode.
-      RGB_LED(1, 0, 1);
+    } else if (AudioSenseState == LOW) {  // This is used to test audio vox levels while in standby mode. Turns LED purple.
+      RGB_LED(0, 1, 0);
       AudioSenseTime = (millis() + 500);
       return;
-    } else if (AudioSenseState == HIGH) {
+    } else if (AudioSenseState == HIGH) { // Turns off relay after 2 seconds of non-activity
       if (AudioSenseTime < millis()) {
         digitalWrite(PTTRelay, HIGH);
-        RGB_LED(0, 0, 1);
+        RGB_LED(1, 1, 0);
         return;
       } else {
         return;
@@ -119,32 +113,32 @@ void loop() {
     } else if (TestPTTState == HIGH) {  // Normal Operation in this mode - standby.
       if (AudioSenseTime < millis()) {
         digitalWrite(PTTRelay, HIGH);
-        RGB_LED(0, 0, 1);  // Set LED Blue
+        RGB_LED(1, 1, 0);  // Set LED Blue
         return;
       }
     } else {
       return;
     }
-  } else if (CurrentMode == 2) {  // Standby mode - only TestPTT activates output
+  } else if (CurrentMode == 2) {  // Active mode - TestPTT and VOX activates output
     if (ModeSwitchState == LOW) {
       CurrentMode = 1;
-      RGB_LED(0, 0, 0);
+      RGB_LED(1, 0, 1);
       delay(250);
       return;
-    } else if (TestPTTState == LOW) {  // PTT Test Button Pressed, closes relay to enable PTT while momementary button is pressed.
-      RGB_LED(1, 0, 0);
+    } else if (TestPTTState == LOW) {  // PTT Test Button Pressed, closes relay to enable PTT/testing while momementary button is pressed.
+      RGB_LED(0, 1, 1);
       digitalWrite(PTTRelay, LOW);
       delay(250);
       return;
-    } else if (AudioSenseState == LOW) {  // This is used to test audio vox levels while in standby mode.
-      RGB_LED(1, 0, 0);
+    } else if (AudioSenseState == LOW) {  // This activates the PTT trigger in 'normal' mode...
+      RGB_LED(0, 1, 1);
       digitalWrite(PTTRelay, LOW);
       AudioSenseTime = (millis() + 2000);
       return;
-    } else if (AudioSenseState == HIGH) {
+    } else if (AudioSenseState == HIGH) { // Turns off relay after 2 seconds of non-activity.
       if (AudioSenseTime < millis()) {
         digitalWrite(PTTRelay, HIGH);
-        RGB_LED(0, 1, 0);
+        RGB_LED(1, 0, 1);
         return;
       } else {
         return;
@@ -152,7 +146,7 @@ void loop() {
     } else if (TestPTTState == HIGH) {  // Normal Operation in this mode - standby.
       if (AudioSenseTime < millis()) {
         digitalWrite(PTTRelay, HIGH);
-        RGB_LED(0, 1, 0);  // Set LED Blue
+        RGB_LED(1, 0, 1);  // Set LED GREEN - Normal "active" mode. 
         return;
       }
     } else {
