@@ -25,6 +25,7 @@ A simulation of this project is [available here](https://wokwi.com/projects/3517
 
 ## To Do list:
 - [ ] Need to debounce Mode button, PTT Test Button. Shouldn't need to worry about AudioSense input.
+* Behaviour is actually better than expected even without debounce, due to the 250ms delay in that section of code. Debounce is more elegant however.
 - [x] Test alpha version on real hardware - PTT and Vox on standby, PTT and Vox on Active mode.
 * Good!
 - [x] Test PTT functionality with FT-847
