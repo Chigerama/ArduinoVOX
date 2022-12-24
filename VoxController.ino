@@ -1,7 +1,7 @@
 // #include <DebounceInput.h> // No point reinventing the wheel. Source: https://github.com/PaulMurrayCbr/DebounceInput
 // First Beta.
 //
-// Relay Logic = Relay active = HIGH
+// Relay Logic = Relay active = LOW.
 // LED logic = common anode, active = LOW.
 //
 // Zero warranty provided. The software below is free and unencumbered software released into the public domain.
